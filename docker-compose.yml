@@ -1,0 +1,20 @@
+version: "3"
+
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: docker/app/Dockerfile
+    volumes:
+    - ./:/var/www
+
+  web:
+    build:
+      context: ./
+      dockerfile: docker/web/Dockerfile
+    volumes:
+      - ./:/var/www
+    depends_on:
+      - app
+    ports:
+      - "80:80"
