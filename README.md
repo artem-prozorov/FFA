@@ -1,4 +1,4 @@
-![PHPUnit](https://github.com/artem-prozorov/FFA/workflows/Laravel/badge.svg)
+![PHPUnit](https://github.com/artem-prozorov/FFA/workflows/PHPUnit/badge.svg?branch=master)
 
 # FFA
 
