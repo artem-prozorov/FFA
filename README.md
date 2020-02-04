@@ -1,12 +1,18 @@
 # FFA
-Experiment
 
 Диаграмма сущностей - https://docs.google.com/drawings/d/1A8X6MKnxCS1rBP19upB2uSX4XvWfTg7CfL97f1Q8eoA
 
-Для разворачивания проекта нужно склонить репозиторий.
+## Как развернуть локально
+```
+make build
+make prepare-app
+```
 
-Запустить composer install в папке с проектом.
+Команды Makefile:
+`build` - собрать контейнеры
+`up` - запустить контейнеры
+`down` - остановить контейнеры
+`migrate` - применить миграции
+`run-tests` - запустить тесты PHPUnit
 
-Затем нужно копировать файл .env.example сюда же и переименовать в .env. Заменить в нем настроки для БД sqlite.
-
-Затем нужно применить миграции командой - php artisan migrate
+Теперь проект будет доступен по адресу http://localhost
