@@ -30,6 +30,7 @@ migrate:
 	@docker-compose exec app php artisan migrate
 
 prepare-db:
+	@docker-compose exec app mkdir ./dbdata
 	@docker-compose exec app touch ./dbdata/local.db
 	@docker-compose exec app touch ./dbdata/test.db
 
@@ -37,5 +38,8 @@ prepare-app: up composer-install env key prepare-db migrate
 
 run-tests: up migrate
 	@@docker-compose exec app bash -c ./vendor/bin/phpunit
+
+bash:
+	@docker-compose exec app bash
 
 default: help
