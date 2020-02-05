@@ -3,10 +3,9 @@ Feature: Game
     Game actions
 
     Scenario: Create new game
-        Given there is a user who can create a game
-        When user creates a new game
-        Then I should have a new game
-        And the game status is "New"
+        Given there is a service that creates games
+        When the service creates a game
+        Then the game status is "New"
 
     Scenario: Apply for the game
         Given there is a game with a status "New"

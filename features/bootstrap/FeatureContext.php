@@ -4,22 +4,35 @@ use Behat\Behat\Tester\Exception\PendingException;
 use Behat\Behat\Context\Context;
 use Behat\Gherkin\Node\PyStringNode;
 use Behat\Gherkin\Node\TableNode;
-use App\Services\Game\GameStarter;
-use App\Models\{
-    User,
-    Game
-};
+use PHPUnit\Framework\Assert;
+use App\Services\Game\{GameService, InvalidGameActionException, Settings};
+use App\Models\{Game, User};
+use App\Dictionaries\GameStatuses;
 
 /**
  * Defines application features from the specific context.
  */
 class FeatureContext implements Context
 {
-    protected $user;
+    /**
+     * @var		GameService	$service
+     */
+    protected $service;
 
+    /**
+     * @var		Game	$game
+     */
     protected $game;
 
-    protected $gameService;
+    /**
+     * @var		User	$user
+     */
+    protected $user;
+
+    /**
+     * @var		Settings	$settings
+     */
+    protected $settings;
 
     /**
      * Initializes context.
@@ -30,49 +43,41 @@ class FeatureContext implements Context
      */
     public function __construct()
     {
-        $this->user = factory(User::class);
-        $this->game = factory(Game::class);
-        $this->gameService = new GameStarter();
+        $this->settings = new Settings();
     }
 
     /**
-     * @Given there is a :user who can create a :game
+     * @Given there is a service that creates games
      */
-    public function thereIsAWhoCanCreateA($user, $game)
+    public function thereIsAServiceThatCreatesGames()
     {
-        throw new PendingException();
+        $this->service = new GameService();
     }
 
     /**
-     * @When user creates a new game
+     * @When the service creates a game
      */
-    public function userCreatesANewGame()
+    public function theServiceCreatesAGame()
     {
-        throw new PendingException();
-    }
-
-    /**
-     * @Then I should have a new game
-     */
-    public function iShouldHaveANewGame()
-    {
-        throw new PendingException();
+        $this->game = $this->service->createNewGame($this->settings);
     }
 
     /**
      * @Then the game status is :arg1
      */
-    public function theGameStatusIs($arg1)
+    public function theGameStatusIs($status)
     {
-        throw new PendingException();
+        $status = $this->game->status;
+
+        Assert::assertEquals(GameStatuses::NEW_GAME, $status);
     }
 
     /**
-     * @Given there is a game with a status :arg1
+     * @Given there is a game with a status :status
      */
-    public function thereIsAGameWithAStatus($arg1)
+    public function thereIsAGameWithAStatus($status)
     {
-        throw new PendingException();
+        $this->game = factory(Game::class, ['status' => GameStatuses::NEW_GAME])->make();
     }
 
     /**
@@ -80,7 +85,7 @@ class FeatureContext implements Context
      */
     public function theGameHasNoPlayers()
     {
-        throw new PendingException();
+        Assert::assertEquals(0, $this->game->players()->count());
     }
 
     /**
@@ -88,7 +93,7 @@ class FeatureContext implements Context
      */
     public function aUser()
     {
-        throw new PendingException();
+        $this->user = factory(User::class)->make();
     }
 
     /**
@@ -96,7 +101,7 @@ class FeatureContext implements Context
      */
     public function theUserAppliesForTheGame()
     {
-        throw new PendingException();
+        $this->service->applyUserForGame($this->user, $this->game);
     }
 
     /**
@@ -104,15 +109,17 @@ class FeatureContext implements Context
      */
     public function theGameHasPlayer($arg1)
     {
-        throw new PendingException();
+        Assert::assertEquals(1, $this->game->players()->count());
     }
 
     /**
-     * @Given there is a game with status other than :arg1
+     * @Given there is a game with status other than :status
      */
-    public function thereIsAGameWithStatusOtherThan($arg1)
+    public function thereIsAGameWithStatusOtherThan($status)
     {
-        throw new PendingException();
+        $status = GameStatuses::COMPLETED_GAME;
+
+        $this->game = factory(Game::class, ['status' => $status])->make();
     }
 
     /**
@@ -120,7 +127,13 @@ class FeatureContext implements Context
      */
     public function theUserReceivesAnError()
     {
-        throw new PendingException();
+        try {
+            $this->service->applyUserForGame($this->user, $this->game);
+
+            throw new \Exception('User has successfully aplied for the game but an exception has been expected');
+        } catch (InvalidGameActionException $e) {
+            Assert::assertTrue(true);
+        }
     }
 
     /**
@@ -128,23 +141,27 @@ class FeatureContext implements Context
      */
     public function theGamesPlayersNumberStaysTheSame()
     {
-        throw new PendingException();
+        Assert::assertEquals(0, $this->game->players()->count());
     }
 
     /**
      * @Given there is a game with status :arg1
      */
-    public function thereIsAGameWithStatus($arg1)
+    public function thereIsAGameWithStatus($status)
     {
-        throw new PendingException();
+        $status = GameStatuses::NEW_GAME;
+
+        $this->game = factory(Game::class, ['status' => $status])->make();
     }
 
     /**
-     * @Given it has less then :arg1 players
+     * @Given it has less then :playersCount players
      */
-    public function itHasLessThenPlayers($arg1)
+    public function itHasLessThenPlayers($playersCount)
     {
-        throw new PendingException();
+        $user = factory(User::class)->make();
+
+        $this->service->applyUserForGame($user, $this->game);
     }
 
     /**
@@ -152,7 +169,7 @@ class FeatureContext implements Context
      */
     public function iTryToStartTheGame()
     {
-        throw new PendingException();
+        
     }
 
     /**
@@ -160,14 +177,22 @@ class FeatureContext implements Context
      */
     public function iHaveAnError()
     {
-        throw new PendingException();
+        try {
+            $this->service->startTheGame($this->game);
+
+            throw new \Exception('The game has successfully been started but it must have thrown an exception');
+        } catch (InvalidGameActionException $e) {
+            Assert::assertEquals(GameStatuses::NEW_GAME, $this->game->status);
+        }
     }
 
     /**
-     * @Then the game's status is still :arg1
+     * @Then the game's status is still :status
      */
-    public function theGamesStatusIsStill($arg1)
+    public function theGamesStatusIsStill($status)
     {
-        throw new PendingException();
+        $status = GameStatuses::NEW_GAME;
+
+        Assert::assertEquals($status, $this->game->status);
     }
 }
