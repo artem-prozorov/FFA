@@ -20,4 +20,9 @@ class Player extends Model
     {
         return $this->belongsTo('App\Models\Position', 'position_id');
     }
+
+    public function artefacts()
+    {
+        return $this->hasMany('App\Models\Artefact', 'player_id', 'id');
+    }
 }

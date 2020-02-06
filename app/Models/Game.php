@@ -15,4 +15,9 @@ class Game extends Model
     {
         return $this->hasMany('App\Models\Player', 'game_id', 'id');
     }
+
+    public function artefacts()
+    {
+        return $this->hasMany('App\Models\Artefact', 'game_id', 'id');
+    }
 }
