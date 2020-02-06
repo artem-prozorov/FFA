@@ -36,7 +36,7 @@ prepare-db:
 
 prepare-app: up composer-install env key prepare-db migrate
 
-run-tests: up migrate
+run-tests: up
 	@@docker-compose exec app bash -c ./vendor/bin/phpunit
 
 bash:
