@@ -4,6 +4,8 @@ namespace App\Contracts\Game;
 
 interface SettingInterface
 {
+    public function __construct(array $config = []);
+
     /**
      * Get map width
      *
