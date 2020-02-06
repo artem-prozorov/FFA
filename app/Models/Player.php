@@ -30,4 +30,9 @@ class Player extends Model
     {
         return $this->hasMany('App\Models\Move', 'current_user_id', 'id');
     }
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\Block', 'player_id', 'id');
+    }
 }

@@ -15,4 +15,9 @@ class Position extends Model
     {
         return $this->hasMany('App\Models\Player', 'position_id', 'id');
     }
+
+    public function blocks()
+    {
+        return $this->hasMany('App\Models\Block', 'position_id', 'id');
+    }
 }
