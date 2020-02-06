@@ -25,4 +25,9 @@ class Player extends Model
     {
         return $this->hasMany('App\Models\Artefact', 'player_id', 'id');
     }
+
+    public function moves()
+    {
+        return $this->hasMany('App\Models\Move', 'current_user_id', 'id');
+    }
 }

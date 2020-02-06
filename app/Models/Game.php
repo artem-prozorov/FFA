@@ -20,4 +20,9 @@ class Game extends Model
     {
         return $this->hasMany('App\Models\Artefact', 'game_id', 'id');
     }
+
+    public function moves()
+    {
+        return $this->hasMany('App\Models\Move', 'game_id', 'id');
+    }
 }
