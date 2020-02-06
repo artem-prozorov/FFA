@@ -8,6 +8,11 @@ class Game extends Model
 {
     public function maps()
     {
-    	return $this->hasMany('App\Models\Map', 'game_id', 'id');
+        return $this->hasMany('App\Models\Map', 'game_id', 'id');
+    }
+
+    public function players()
+    {
+        return $this->hasMany('App\Models\Player', 'game_id', 'id');
     }
 }

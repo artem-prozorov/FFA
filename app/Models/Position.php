@@ -10,4 +10,9 @@ class Position extends Model
     {
         return $this->morphTo();
     }
+
+    public function players()
+    {
+        return $this->hasMany('App\Models\Player', 'position_id', 'id');
+    }
 }
