@@ -23,15 +23,10 @@ class CreateBlocksTable extends Migration
             $table->integer('duration')
                 ->length(2);
 
-            $table->integer('position_id')
-                ->length(11);
+            $table->timestamps();
 
             $table->foreign('player_id')
               ->references('id')->on('players')
-              ->onDelete('cascade');
-
-            $table->foreign('position_id')
-              ->references('id')->on('positions')
               ->onDelete('cascade');
         });
     }

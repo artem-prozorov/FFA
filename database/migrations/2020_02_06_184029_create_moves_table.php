@@ -29,6 +29,8 @@ class CreateMovesTable extends Migration
             $table->integer('current_user_id')
                 ->length(11);
 
+            $table->timestamps();
+
             $table->foreign('game_id')
               ->references('id')->on('games')
               ->onDelete('cascade');

@@ -13,6 +13,6 @@ class Map extends Model
 
     public function penaltyZones()
     {
-    	return $this->hasMany(PenaltyZone::class, 'map_id', 'id');
+    	return $this->hasMany(PenaltyZone::class, 'map_id');
     }
 }

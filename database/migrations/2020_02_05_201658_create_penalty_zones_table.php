@@ -23,6 +23,8 @@ class CreatePenaltyZonesTable extends Migration
             $table->integer('map_id')
                 ->length(11);
 
+            $table->timestamps();
+
             $table->foreign('map_id')
               ->references('id')->on('maps')
               ->onDelete('cascade');
