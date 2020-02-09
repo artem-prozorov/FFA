@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
-    public function maps()
+    public function map()
     {
-        return $this->hasMany(Map::class, 'game_id', 'id');
+        return $this->hasOne(Map::class, 'game_id');
     }
 
     public function players()
