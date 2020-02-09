@@ -8,11 +8,11 @@ class Map extends Model
 {
     public function game()
     {
-    	return $this->belongsTo('App\Models\Game', 'game_id');
+    	return $this->belongsTo(Game::class, 'game_id');
     }
 
-    public function penalty_zones()
+    public function penaltyZones()
     {
-    	return $this->hasMany('App\Models\Penalty_zone', 'map_id', 'id');
+    	return $this->hasMany(PenaltyZone::class, 'map_id', 'id');
     }
 }

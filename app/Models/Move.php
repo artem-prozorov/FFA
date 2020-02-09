@@ -8,11 +8,11 @@ class Move extends Model
 {
     public function game()
     {
-        return $this->belongsTo('App\Models\Game', 'game_id');
+        return $this->belongsTo(Game::class, 'game_id');
     }
 
     public function player()
     {
-        return $this->belongsTo('App\Models\Player', 'current_user_id');
+        return $this->belongsTo(Player::class, 'current_user_id');
     }
 }

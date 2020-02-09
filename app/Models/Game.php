@@ -8,21 +8,21 @@ class Game extends Model
 {
     public function maps()
     {
-        return $this->hasMany('App\Models\Map', 'game_id', 'id');
+        return $this->hasMany(Map::class, 'game_id', 'id');
     }
 
     public function players()
     {
-        return $this->hasMany('App\Models\Player', 'game_id', 'id');
+        return $this->hasMany(Player::class, 'game_id', 'id');
     }
 
     public function artefacts()
     {
-        return $this->hasMany('App\Models\Artefact', 'game_id', 'id');
+        return $this->hasMany(Artefact::class, 'game_id', 'id');
     }
 
     public function moves()
     {
-        return $this->hasMany('App\Models\Move', 'game_id', 'id');
+        return $this->hasMany(Move::class, 'game_id', 'id');
     }
 }

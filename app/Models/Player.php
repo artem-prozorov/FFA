@@ -3,36 +3,34 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Traits\HasOnePosition;
 
 class Player extends Model
 {
+    use HasOnePosition;
+
     public function game()
     {
-        return $this->belongsTo('App\Models\Game', 'game_id');
+        return $this->belongsTo(Game::class, 'game_id');
     }
 
     public function user()
     {
-        return $this->belongsTo('App\Models\User', 'user_id');
-    }
-
-    public function position()
-    {
-        return $this->belongsTo('App\Models\Position', 'position_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function artefacts()
     {
-        return $this->hasMany('App\Models\Artefact', 'player_id', 'id');
+        return $this->hasMany(Artefact::class, 'player_id', 'id');
     }
 
     public function moves()
     {
-        return $this->hasMany('App\Models\Move', 'current_user_id', 'id');
+        return $this->hasMany(Move::class, 'current_user_id', 'id');
     }
 
     public function blocks()
     {
-        return $this->hasMany('App\Models\Block', 'player_id', 'id');
+        return $this->hasMany(Block::class, 'player_id', 'id');
     }
 }

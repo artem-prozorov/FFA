@@ -8,11 +8,11 @@ class Block extends Model
 {
     public function player()
     {
-        return $this->belongsTo('App\Models\Player', 'player_id');
+        return $this->belongsTo(Player::class, 'player_id');
     }
     
     public function position()
     {
-        return $this->belongsTo('App\Models\Position', 'position_id');
+        return $this->belongsTo(Position::class, 'position_id');
     }
 }
