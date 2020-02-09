@@ -26,8 +26,7 @@ class CreatePlayersTable extends Migration
             $table->integer('status')
                 ->length(2);
 
-            $table->integer('position_id')
-                ->length(11);
+            $table->timestamps();
 
             $table->foreign('game_id')
               ->references('id')->on('games')
@@ -35,10 +34,6 @@ class CreatePlayersTable extends Migration
 
             $table->foreign('user_id')
               ->references('id')->on('users')
-              ->onDelete('cascade');
-
-            $table->foreign('position_id')
-              ->references('id')->on('positions')
               ->onDelete('cascade');
         });
     }

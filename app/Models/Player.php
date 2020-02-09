@@ -21,16 +21,16 @@ class Player extends Model
 
     public function artefacts()
     {
-        return $this->hasMany(Artefact::class, 'player_id', 'id');
+        return $this->hasMany(Artefact::class, 'player_id');
     }
 
-    public function moves()
+    public function move()
     {
-        return $this->hasMany(Move::class, 'current_user_id', 'id');
+        return $this->belongsTo(Move::class, 'current_user_id');
     }
 
     public function blocks()
     {
-        return $this->hasMany(Block::class, 'player_id', 'id');
+        return $this->hasMany(Block::class, 'player_id');
     }
 }

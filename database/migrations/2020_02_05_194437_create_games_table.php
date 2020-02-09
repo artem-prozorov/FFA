@@ -19,6 +19,8 @@ class CreateGamesTable extends Migration
 
             $table->integer('status')
                 ->length(2);
+            
+            $table->timestamps();
         });
     }
 

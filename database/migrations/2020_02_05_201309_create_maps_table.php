@@ -29,6 +29,8 @@ class CreateMapsTable extends Migration
             $table->foreign('game_id')
               ->references('id')->on('games')
               ->onDelete('cascade');
+
+            $table->timestamps();
         });
     }
 

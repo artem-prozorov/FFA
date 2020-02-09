@@ -29,6 +29,8 @@ class CreateArtefactsTable extends Migration
             $table->integer('type')
                 ->length(2);
 
+            $table->timestamps();
+
             $table->foreign('game_id')
               ->references('id')->on('games')
               ->onDelete('cascade');

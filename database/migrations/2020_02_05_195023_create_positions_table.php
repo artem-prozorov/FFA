@@ -24,9 +24,11 @@ class CreatePositionsTable extends Migration
                 ->length(11);
 
             $table->string('entity_type')
-                ->length(100);
+                ->length(256);
 
             $table->unsignedBiginteger('entity_id');
+
+            $table->timestamps();
         });
     }
 
