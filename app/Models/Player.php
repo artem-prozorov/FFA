@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasOnePosition;
+use App\Contracts\AttackableInterface;
 
 class Player extends Model implements AttackableInterface
 {
