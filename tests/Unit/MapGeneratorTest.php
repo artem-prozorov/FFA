@@ -4,6 +4,7 @@ namespace Tests\Unit;
 
 use App\Contracts\Game\SettingsInterface;
 use App\Contracts\Map\CoordinatesServiceInterface;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Game;
 use App\Models\Map;
 use App\Models\Position;
@@ -12,6 +13,8 @@ use Tests\TestCase;
 
 class MapGeneratorTest extends TestCase
 {
+    use RefreshDatabase;
+
     public function testMapGenerator()
     {
         $settings = new class () implements SettingsInterface {
@@ -59,6 +62,6 @@ class MapGeneratorTest extends TestCase
         $this->assertEquals($settings->getMapWidth(), $map->width);
         $this->assertEquals($settings->getMapHeight(), $map->height);
 
-        $this->assertGreaterThan($map->artifacts()->count(), 0);
+        $this->assertGreaterThan(0, $map->game->artefacts()->count());
     }
 }
