@@ -3,14 +3,16 @@ Feature: Game
     Game actions
 
     Scenario: Create new game
-        Given there is a service that creates games
-        When the service creates a game
+        Given there is a setting to create a new game with a map 150x100
+        When the service creates a new game
         Then the game status is "New"
+        And the map's width is 150
+        And thw map's height is 100
 
     Scenario: Apply for the game
         Given there is a game with a status "New"
         And the game has no players
-        And a user
+        And there is a userwho wants to apply for the game
         When the user applies for the game
         Then the game has 1 player
 
@@ -18,7 +20,7 @@ Feature: Game
         Given there is a game with status other than "New"
         And a user
         When the user applies for the game
-        Then the user receives an error
+        Then an exception is thrown
         And the game's players number stays the same
 
     Scenario: the game cannot start if it has less then 2 players
