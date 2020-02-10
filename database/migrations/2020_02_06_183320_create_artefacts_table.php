@@ -21,7 +21,8 @@ class CreateArtefactsTable extends Migration
                 ->length(11);
 
             $table->integer('player_id')
-                ->length(11);
+                ->length(11)
+                ->nullable();
 
             $table->string('name')
                 ->length(255);
@@ -37,7 +38,7 @@ class CreateArtefactsTable extends Migration
 
             $table->foreign('player_id')
               ->references('id')->on('players')
-              ->onDelete('cascade');
+              ->onDelete('set null');
         });
     }
 
