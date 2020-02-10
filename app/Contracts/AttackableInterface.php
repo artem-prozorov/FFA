@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface AttackableInterface
+interface AttackableInterface extends PositionableInterface
 {
     
 }
