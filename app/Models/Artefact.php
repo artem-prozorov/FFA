@@ -9,6 +9,11 @@ class Artefact extends Model
 {
     use HasOnePosition;
 
+    protected $fillable = [
+        'name',
+        'type',
+    ];
+
     public function game()
     {
         return $this->belongsTo(Game::class, 'game_id');
