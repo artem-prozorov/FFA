@@ -2,37 +2,29 @@
 
 namespace App\Contracts\Game;
 
-interface SettingInterface
+interface SettingsInterface
 {
     /**
-     * Get map width
+     * Returns the map width
      *
      * @access	public
-     * @return	int
+     * @return	void
      */
     public function getMapWidth(): int;
 
     /**
-     * Get map height
+     * Returns the map height
      *
      * @access	public
-     * @return	int
+     * @return	void
      */
     public function getMapHeight(): int;
 
     /**
-     * getDificulty.
+     * Returns the map dificulty in percentage (1-100)
      *
      * @access	public
-     * @return	int
+     * @return	void
      */
-    public function getDificulty(): int;
-
-    /**
-     * Returns the validation rules array
-     *
-     * @access	public
-     * @return	array
-     */
-    public function getValidationRules(): array;
+    public function getDificultyPercentage(): int;
 }
