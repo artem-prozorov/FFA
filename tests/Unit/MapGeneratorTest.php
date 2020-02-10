@@ -4,11 +4,12 @@ namespace Tests\Unit;
 
 use App\Contracts\Game\SettingsInterface;
 use App\Contracts\Map\CoordinatesServiceInterface;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Game;
 use App\Models\Map;
 use App\Models\Position;
+use App\Services\Artefact\ArtefactGenerator;
 use App\Services\Map\MapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MapGeneratorTest extends TestCase
@@ -52,7 +53,10 @@ class MapGeneratorTest extends TestCase
             }
         };
 
-        $service = new MapGenerator($coordinatesService);
+        // Use real generator because from create fake need copy real generator
+        $artefactGenerator = new ArtefactGenerator($coordinatesService);
+
+        $service = new MapGenerator($artefactGenerator);
 
         $game = factory(Game::class)->make();
         $game->save();
