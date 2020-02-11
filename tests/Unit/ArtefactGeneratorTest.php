@@ -24,6 +24,9 @@ class ArtefactGeneratorTest extends TestCase
      */
     protected $map = null;
 
+    /**
+     * Create map & service before run test
+     */
     protected function setUp(): void
     {
         parent::setUp();
@@ -48,6 +51,9 @@ class ArtefactGeneratorTest extends TestCase
         $game->map()->save($this->map);
     }
 
+    /**
+     * Test create one artefact
+     */
     public function testCreateOne()
     {
         $artefact = $this->service->create($this->map, 1);
@@ -56,6 +62,9 @@ class ArtefactGeneratorTest extends TestCase
         $this->assertEquals($artefact->type, 1);
     }
 
+    /**
+     * Test create many artefacts with concrete artefacts count
+     */
     public function testCreateMoreConcreteCount()
     {
         $artefacts = $this->service->createMany($this->map, 1, 5);
@@ -70,6 +79,9 @@ class ArtefactGeneratorTest extends TestCase
         $this->assertEquals($artefactsCount, 5);
     }
 
+    /**
+     * Test create many artefacts with random artefacts count
+     */
     public function testCreateMoreRandomCount()
     {
         $artefacts = $this->service->createMany($this->map, 1);

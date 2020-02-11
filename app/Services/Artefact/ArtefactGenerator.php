@@ -18,11 +18,22 @@ class ArtefactGenerator implements ArtefactGeneratorInterface
      */
     protected $coordinatesService = null;
 
+    /**
+     * @param CoordinatesServiceInterface $coordinatesService
+     */
     public function __construct(CoordinatesServiceInterface $coordinatesService)
     {
         $this->coordinatesService = $coordinatesService;
     }
 
+    /**
+     * Create a new artefact & bind to map
+     *
+     * @param  Map    $map
+     * @param  int    $type
+     *
+     * @return Artefact
+     */
     public function create(Map $map, int $type): Artefact
     {
         $artefact = new Artefact([
@@ -43,6 +54,15 @@ class ArtefactGenerator implements ArtefactGeneratorInterface
         return $artefact;
     }
 
+    /**
+     * Create artefacts & bind to map
+     *
+     * @param  Map         $map
+     * @param  int         $type
+     * @param  int|integer $count
+     *
+     * @return Artefact[]
+     */
     public function createMany(Map $map, int $type, int $count = 0): array
     {
         if (0 >= $count) {

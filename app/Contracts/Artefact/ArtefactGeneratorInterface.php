@@ -8,6 +8,8 @@ use App\Models\Map;
 interface ArtefactGeneratorInterface
 {
     /**
+     * Create a new artefact & bind to map
+     *
      * @param  Map $map
      * @param  int $type
      *
@@ -16,8 +18,10 @@ interface ArtefactGeneratorInterface
     public function create(Map $map, int $type): Artefact;
 
     /**
-     * @param  Map $map
-     * @param  int $type
+     * Create artefacts & bind to map
+     *
+     * @param  Map         $map
+     * @param  int         $type
      * @param  int|integer $count
      *
      * @return Artefact[]

@@ -16,11 +16,28 @@ class MapGeneratorTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test create map with artefacts
+     */
     public function testMapGenerator()
     {
+        /**
+         * Fake settings class
+         */
         $settings = new class () implements SettingsInterface {
+            /**
+             * @var integer
+             */
             protected $mapWidth = 0;
+
+            /**
+             * @var integer
+             */
             protected $mapHeight = 0;
+
+            /**
+             * @var integer
+             */
             protected $dificultyPercentage = 0;
 
             public function _construct()
@@ -30,23 +47,48 @@ class MapGeneratorTest extends TestCase
                 $this->dificultyPercentage = rand(1, 100);
             }
 
+            /**
+             * Return map width
+             *
+             * @return int
+             */
             public function getMapWidth(): int
             {
                 return $this->mapWidth;
             }
 
+            /**
+             * Return map height
+             *
+             * @return int
+             */
             public function getMapHeight(): int
             {
                 return $this->mapHeight;
             }
 
+            /**
+             * Return dificulty percentage
+             *
+             * @return int
+             */
             public function getDificultyPercentage(): int
             {
                 return $this->dificultyPercentage;
             }
         };
 
+        /**
+         * Fake coordinates service
+         */
         $coordinatesService = new class () implements CoordinatesServiceInterface {
+            /**
+             * Return non occupied point by map
+             *
+             * @param  Map    $map
+             *
+             * @return position
+             */
             public function getNonOccupiedPoint(Map $map): Position
             {
                 return factory(Position::class)->make();

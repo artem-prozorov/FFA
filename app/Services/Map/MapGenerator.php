@@ -15,11 +15,22 @@ class MapGenerator implements MapGeneratorInterface
      */
     protected $artefactGenerator = null;
 
+    /**
+     * @param ArtefactGeneratorInterface $artefactGenerator
+     */
     public function __construct(ArtefactGeneratorInterface $artefactGenerator)
     {
         $this->artefactGenerator = $artefactGenerator;
     }
 
+    /**
+     * Create map with artefacts
+     *
+     * @param  SettingsInterface $settings
+     * @param  Game              $game
+     *
+     * @return Map
+     */
     public function create(SettingsInterface $settings, Game $game): Map
     {
         $map = new Map([
