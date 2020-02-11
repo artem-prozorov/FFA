@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Traits\HasOnePosition;
+use App\Contracts\TakeableInterface;
 
-class Artefact extends Model
+class Artefact extends Model implements TakeableInterface
 {
     use HasOnePosition;
 
