@@ -47,10 +47,10 @@ class SettingsTest extends TestCase
         return [
             [
                 ['width' => 111],
-                $this->config,
+                $this->config[0],
                 [
                     'width' => 111, 
-                    'heigth' => $this->config['default_width'], 
+                    'height' => $this->config['default_width'], 
                     'dificulty' => $this->config['default_dificulty'],
                 ],
             ],
@@ -59,7 +59,7 @@ class SettingsTest extends TestCase
                 [],
                 [
                     'width' => Settings::DEFAULT_WIDTH, 
-                    'heigth' => 115, 
+                    'height' => 115, 
                     'dificulty' => Settings::DEFAULT_DIFICULTY,
                 ],
             ],
