@@ -87,12 +87,12 @@ class ArtefactGeneratorTest extends TestCase
         $artefacts = $this->service->createMany($this->map, 1);
 
         $this->assertGreaterThanOrEqual(
-            ArtefactGenerator::MIN_ARTEFACTS, 
+            ArtefactGenerator::MIN_ARTEFACTS,
             count($artefacts)
         );
 
         $this->assertGreaterThanOrEqual(
-            count($artefacts), 
+            count($artefacts),
             ArtefactGenerator::MAX_ARTEFACTS
         );
 
@@ -102,12 +102,12 @@ class ArtefactGeneratorTest extends TestCase
             ->count();
 
         $this->assertGreaterThanOrEqual(
-            ArtefactGenerator::MIN_ARTEFACTS, 
+            ArtefactGenerator::MIN_ARTEFACTS,
             $artefactsCount
         );
 
         $this->assertGreaterThanOrEqual(
-            $artefactsCount, 
+            $artefactsCount,
             ArtefactGenerator::MAX_ARTEFACTS
         );
     }
