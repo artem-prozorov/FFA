@@ -65,7 +65,7 @@ class ArtefactGeneratorTest extends TestCase
     /**
      * Test create many artefacts with concrete artefacts count
      */
-    public function testCreateMoreConcreteCount()
+    public function testCreateManyConcreteCount()
     {
         $artefacts = $this->service->createMany($this->map, 1, 5);
 
@@ -82,7 +82,7 @@ class ArtefactGeneratorTest extends TestCase
     /**
      * Test create many artefacts with random artefacts count
      */
-    public function testCreateMoreRandomCount()
+    public function testCreateManyRandomCount()
     {
         $artefacts = $this->service->createMany($this->map, 1);
 
