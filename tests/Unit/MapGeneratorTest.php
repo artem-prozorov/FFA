@@ -100,8 +100,7 @@ class MapGeneratorTest extends TestCase
 
         $service = new MapGenerator($artefactGenerator);
 
-        $game = factory(Game::class)->make();
-        $game->save();
+        $game = factory(Game::class)->create();
 
         $map = $service->create($settings, $game);
 

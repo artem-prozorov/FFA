@@ -40,8 +40,7 @@ class ArtefactGeneratorTest extends TestCase
 
         $this->service = new ArtefactGenerator($coordinatesService);
 
-        $game = factory(Game::class)->make();
-        $game->save();
+        $game = factory(Game::class)->create();
 
         $this->map = new Map([
             'width' => 100,
