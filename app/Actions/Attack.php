@@ -6,22 +6,27 @@ use App\Contracts\AttackableInterface;
 
 class Attack extends AbstractAction
 {
+    /**
+     * @inheritDoc
+     */
     public function getDescription(): string
     {
         return __('actions.attack');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getTitle(): string
     {
         return __('actions.attack');
     }
 
+    /**
+     * @inheritDoc
+     */
     public function isAvailable(): bool
     {
-        if (parent::getSubject() instanceof AttackableInterface) {
-            return true;
-        }
-
-        return false;
+        return $this->getSubject() instanceof AttackableInterface;
     }
 }
