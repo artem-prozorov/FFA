@@ -103,13 +103,37 @@ class GameServiceTest extends TestCase
              */
             public function create(SettingsInterface $settings, Game $game): Map
             {
-                return new Map([
+                $map = new Map([
                     'width' => $settings->getMapWidth(),
                     'height' => $settings->getMapHeight(),
                 ]);
+
+                $game->map()->save($map);
+
+                return $map;
             }
         };
 
         $this->service = new GameService($mapGenerator);
+    }
+
+    /**
+     * Test create new game
+     */
+    public function testCreateNewGame()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $this->assertEquals(
+            GameStatuses::NEW_GAME,
+            $game->status
+        );
+
+        $this->assertInstanceOf(
+            Map::class,
+            $game->map
+        );
     }
 }
