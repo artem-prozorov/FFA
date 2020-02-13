@@ -22,7 +22,7 @@ interface CoordinatesServiceInterface
      * @access	public
      * @param Position $a
      * @param Position $b
-     * @return int
+     * @return float
      */
-    public function getDistance(Position $a, Position $b): int;
+    public function getDistance(Position $a, Position $b): float;
 }
