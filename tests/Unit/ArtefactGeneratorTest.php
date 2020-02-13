@@ -36,6 +36,11 @@ class ArtefactGeneratorTest extends TestCase
             {
                 return factory(Position::class)->make();
             }
+            
+            public function getDistance(Position $a, Position $b): float
+            {
+                return 0;
+            }
         };
 
         $this->service = new ArtefactGenerator($coordinatesService);
