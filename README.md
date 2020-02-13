@@ -1,4 +1,6 @@
 ![PHPUnit](https://github.com/artem-prozorov/FFA/workflows/PHPUnit/badge.svg?branch=master)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/artem-prozorov/FFA/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/artem-prozorov/FFA/?branch=master)
+[![Code Intelligence Status](https://scrutinizer-ci.com/g/artem-prozorov/FFA/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence)
 
 # FFA
 
