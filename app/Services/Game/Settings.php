@@ -2,85 +2,79 @@
 
 
 namespace App\Services\Game;
+
 use App\Contracts\Game\SettingsInterface;
 
 
 class Settings implements SettingsInterface
 {
-    public const MAX_WIDTH = 100;
-    public const MIN_WIDTH = 1000;
+    public const DEFAULT_MAX_WIDTH = 100;
+    public const DEFAULT_MIN_WIDTH = 1000;
     public const DEFAULT_WIDTH = 250;
-    public const MIN_HEIGHT = 100;
-    public const MAX_HEIGHT = 1000;
+    public const DEFAULT_MIN_HEIGHT = 100;
+    public const DEFAULT_MAX_HEIGHT = 1000;
     public const DEFAULT_HEIGHT = 250;
-    public const MIN_DIFICULTY = 1;
-    public const MAX_DIFICULTY = 10;
+    public const DEFAULT_MIN_DIFICULTY = 1;
+    public const DEFAULT_MAX_DIFICULTY = 10;
     public const DEFAULT_DIFICULTY = 5;
 
+    protected $min_width;
+    protected $max_width;
     protected $width;
+    protected $min_height;
+    protected $max_height;
     protected $height;
+    protected $min_dificulty;
+    protected $max_dificulty;
     protected $dificulty;
 
-    public function __construct(array $setings = [])
+    public function __construct(array $settings = [])
     {
-        if(empty($setings['width']) || empty($setings['height']) || empty($setings['dificulty'])){
-            $config = config('game.settings');
+        $min_width = $settings['min_width'] ?? config('game.settings.default_min_width') ?? static::DEFAULT_MIN_WIDTH;
+        $max_width = $settings['max_width'] ?? config('game.settings.default_max_width') ?? static::DEFAULT_MAX_WIDTH;
+        $width = $settings['width'] ?? config('game.settings.default_width') ?? static::DEFAULT_WIDTH;
+
+        if ($min_width > $width || $max_width < $width) {
+            throw new \InvalidArgumentException();
         }
 
-        if(!empty($setings['width'])){
-            $this->width = $setings['width'];
-        }elseif(!empty($config['default_width'])){
-            $this->width = $config['default_width'];
-        }else{
-            $this->width = self::DEFAULT_WIDTH;
+        $min_height = $settings['min_height'] ?? config('game.settings.default_min_height') ?? static::DEFAULT_MIN_HEIGHT;
+        $max_height = $settings['max_height'] ?? config('game.settings.default_max_height') ?? static::DEFAULT_MAX_HEIGHT;
+        $height = $settings['height'] ?? config('game.settings.default_height') ?? static::DEFAULT_HEIGHT;
+
+        if ($min_height > $height || $max_height < $height) {
+            throw new \InvalidArgumentException();
         }
 
-        if(!empty($setings['height'])){
-            $this->height = $setings['height'];
-        }elseif(!empty($config['default_height'])){
-            $this->height = $config['default_height'];
-        }else{
-            $this->height = self::DEFAULT_HEIGHT;
-        }
+        $min_dificulty = $settings['min_dificulty'] ?? config('game.settings.default_min_dificulty') ?? static::DEFAULT_MIN_DIFICULTY;
+        $max_dificulty = $settings['max_dificulty'] ?? config('game.settings.default_max_dificulty') ?? static::DEFAULT_MAX_DIFICULTY;
+        $dificulty = $settings['dificulty'] ?? config('game.settings.default_dificulty') ?? static::DEFAULT_DIFICULTY;
 
-        if(!empty($setings['dificulty'])){
-            $this->dificulty = $setings['dificulty'];
-        }elseif(!empty($config['default_dificulty'])){
-            $this->dificulty = $config['dificulty'];
-        }else{
-            $this->dificulty = self::DEFAULT_DIFICULTY;
+        if ($min_dificulty > $dificulty || $max_dificulty < $dificulty) {
+            throw new \InvalidArgumentException();
         }
     }
 
     /**
-     * get width parameters
-     *
-     * @access	public
-     * @return	width
+     * @inheritDoc
      */
-    public function getMapWidth() :int
+    public function getMapWidth(): int
     {
         return $this->width;
     }
 
     /**
-     * get height parameters
-     *
-     * @access	public
-     * @return	height
+     * @inheritDoc
      */
-    public function getMapHeight() :int
+    public function getMapHeight(): int
     {
         return $this->height;
     }
 
     /**
-     * get dificulty parameters
-     *
-     * @access	public
-     * @return	dificulty
+     * @inheritDoc
      */
-    public function getDificultyPercentage() :int
+    public function getDificultyPercentage(): int
     {
         $this->dificulty;
     }
