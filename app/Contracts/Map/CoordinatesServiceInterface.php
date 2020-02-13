@@ -11,8 +11,18 @@ interface CoordinatesServiceInterface
      * Returns a non-occupied point on the map
      *
      * @access	public
-     * @param	Map	$map	
+     * @param	Map	$map
      * @return	Position
      */
     public function getNonOccupiedPoint(Map $map): Position;
+
+    /**
+     * Returns a distance from point A to point B
+     *
+     * @access	public
+     * @param Position $a
+     * @param Position $b
+     * @return float
+     */
+    public function getDistance(Position $a, Position $b): float;
 }

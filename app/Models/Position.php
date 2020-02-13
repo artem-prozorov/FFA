@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Position extends Model
 {
-    public function entity() 
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'x',
+        'y',
+    ];
+
+    public function entity()
     {
         return $this->morphTo();
     }

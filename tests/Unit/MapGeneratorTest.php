@@ -93,6 +93,17 @@ class MapGeneratorTest extends TestCase
             {
                 return factory(Position::class)->make();
             }
+
+            /**
+             * @param  Position $a
+             * @param  Position $b
+             *
+             * @return float
+             */
+            public function getDistance(Position $a, Position $b): float
+            {
+                return 0;
+            }
         };
 
         // Use real generator because from create fake need copy real generator
