@@ -57,8 +57,8 @@ class ArtefactGeneratorTest extends TestCase
     {
         $artefact = $this->service->create($this->map, 1);
 
-        $this->assertEquals($artefact->game_id, $this->map->game_id);
-        $this->assertEquals($artefact->type, 1);
+        $this->assertEquals($this->map->game_id, $artefact->game_id);
+        $this->assertEquals(1, $artefact->type);
     }
 
     /**
@@ -68,14 +68,14 @@ class ArtefactGeneratorTest extends TestCase
     {
         $artefacts = $this->service->createMany($this->map, 1, 5);
 
-        $this->assertEquals(count($artefacts), 5);
+        $this->assertEquals(5, count($artefacts));
 
         $artefactsCount = $this->map
             ->game
             ->artefacts()
             ->count();
 
-        $this->assertEquals($artefactsCount, 5);
+        $this->assertEquals(5, $artefactsCount);
     }
 
     /**
