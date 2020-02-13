@@ -30,6 +30,8 @@ class GameServiceTest extends TestCase
      */
     protected function setUp(): void
     {
+        parent::setUp();
+
         /**
          * Fake settings class
          */
