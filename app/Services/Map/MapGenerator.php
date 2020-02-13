@@ -3,50 +3,46 @@
 namespace App\Services\Map;
 
 use App\Contracts\Game\SettingsInterface;
-use App\Contracts\Map\CoordinatesServiceInterface;
+use App\Contracts\Artefact\ArtefactGeneratorInterface;
 use App\Contracts\Map\MapGeneratorInterface;
-use App\Models\Artefact;
 use App\Models\Game;
 use App\Models\Map;
-use Illuminate\Support;
 
 class MapGenerator implements MapGeneratorInterface
 {
     /**
-     * @var CoordinatesServiceInterface
+     * @var ArtefactGeneratorInterface
      */
-    protected $coordinatesService = null;
+    protected $artefactGenerator = null;
 
-    public function __construct(CoordinatesServiceInterface $coordinatesService)
+    /**
+     * @param ArtefactGeneratorInterface $artefactGenerator
+     */
+    public function __construct(ArtefactGeneratorInterface $artefactGenerator)
     {
-        $this->coordinatesService = $coordinatesService;
+        $this->artefactGenerator = $artefactGenerator;
     }
 
+    /**
+     * Create map with artefacts
+     *
+     * @param  SettingsInterface $settings
+     * @param  Game              $game
+     *
+     * @return Map
+     */
     public function create(SettingsInterface $settings, Game $game): Map
     {
-        $map = new Map();
+        $map = new Map([
+            'width' => $settings->getMapWidth(),
+            'height' => $settings->getMapHeight(),
+        ]);
 
-        $map->game_id = $game->id;
-        $map->width = $settings->getMapWidth();
-        $map->height = $settings->getMapHeight();
+        $game->map()
+            ->save($map);
 
-        $map->save();
-
-        for ($i = 0; $i < rand(10, 100); $i++) {
-            $artefact = new Artefact();
-
-            $artefact->game_id = $game->id;
-            $artefact->name = Support\Str::random(8);
-            $artefact->type = 1;
-
-            $artefact->save();
-
-            $position = $this->coordinatesService
-                ->getNonOccupiedPoint($map);
-
-            $artefact->position()
-                ->save($position);
-        }
+        $this->artefactGenerator
+            ->createMany($map, 1);
 
         return $map;
     }

@@ -4,22 +4,40 @@ namespace Tests\Unit;
 
 use App\Contracts\Game\SettingsInterface;
 use App\Contracts\Map\CoordinatesServiceInterface;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\Game;
 use App\Models\Map;
 use App\Models\Position;
+use App\Services\Artefact\ArtefactGenerator;
 use App\Services\Map\MapGenerator;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
 class MapGeneratorTest extends TestCase
 {
     use RefreshDatabase;
 
+    /**
+     * Test create map with artefacts
+     */
     public function testMapGenerator()
     {
+        /**
+         * Fake settings class
+         */
         $settings = new class () implements SettingsInterface {
+            /**
+             * @var integer
+             */
             protected $mapWidth = 0;
+
+            /**
+             * @var integer
+             */
             protected $mapHeight = 0;
+
+            /**
+             * @var integer
+             */
             protected $dificultyPercentage = 0;
 
             public function _construct()
@@ -29,33 +47,60 @@ class MapGeneratorTest extends TestCase
                 $this->dificultyPercentage = rand(1, 100);
             }
 
+            /**
+             * Return map width
+             *
+             * @return int
+             */
             public function getMapWidth(): int
             {
                 return $this->mapWidth;
             }
 
+            /**
+             * Return map height
+             *
+             * @return int
+             */
             public function getMapHeight(): int
             {
                 return $this->mapHeight;
             }
 
+            /**
+             * Return dificulty percentage
+             *
+             * @return int
+             */
             public function getDificultyPercentage(): int
             {
                 return $this->dificultyPercentage;
             }
         };
 
+        /**
+         * Fake coordinates service
+         */
         $coordinatesService = new class () implements CoordinatesServiceInterface {
+            /**
+             * Return non occupied point by map
+             *
+             * @param  Map    $map
+             *
+             * @return position
+             */
             public function getNonOccupiedPoint(Map $map): Position
             {
                 return factory(Position::class)->make();
             }
         };
 
-        $service = new MapGenerator($coordinatesService);
+        // Use real generator because from create fake need copy real generator
+        $artefactGenerator = new ArtefactGenerator($coordinatesService);
 
-        $game = factory(Game::class)->make();
-        $game->save();
+        $service = new MapGenerator($artefactGenerator);
+
+        $game = factory(Game::class)->create();
 
         $map = $service->create($settings, $game);
 
