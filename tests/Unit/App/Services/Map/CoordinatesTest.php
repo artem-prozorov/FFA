@@ -2,9 +2,10 @@
 
 namespace Tests\Unit\App\Services\Game;
 
-use Tests\TestCase;
-use App\Services\Map\Coordinates;
 use App\Contracts\Map\CoordinatesServiceInterface;
+use App\Models\Position;
+use App\Services\Map\Coordinates;
+use Tests\TestCase;
 
 class CoordinatesTest extends TestCase
 {
@@ -25,11 +26,11 @@ class CoordinatesTest extends TestCase
      * @access	public
      * @return	void
      */
-    public function testConfig(Position $positionA, Position $positionB, int $expected)
+    public function testConfig(Position $positionA, Position $positionB, float $expected)
     {
         $distance = $this->service->getDistance($positionA, $positionB);
 
-        $this->assertEquals($expected, $distance);
+        $this->assertEqualsWithDelta($expected, $distance, 0.01);
     }
 
     /**
@@ -38,7 +39,7 @@ class CoordinatesTest extends TestCase
      * @access	public
      * @return	array
      */
-    public function configProvider(): array
+    public function positionsProvider(): array
     {
         return [
             [
@@ -54,7 +55,7 @@ class CoordinatesTest extends TestCase
             [
                 new Position(['x' => 10, 'y' => 10]),
                 new Position(['x' => 20, 'y' => 20]),
-                10,
+                14.14,
             ],
         ];
     }
