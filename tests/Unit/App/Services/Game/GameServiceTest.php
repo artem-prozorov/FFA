@@ -32,87 +32,38 @@ class GameServiceTest extends TestCase
     {
         parent::setUp();
 
-        /**
-         * Fake settings class
-         */
-        $this->settings = new class () implements SettingsInterface {
-            /**
-             * @var integer
-             */
-            protected $mapWidth = 0;
+        $this->settings = $this->createMock(
+            SettingsInterface::class
+        );
 
-            /**
-             * @var integer
-             */
-            protected $mapHeight = 0;
+        $this->settings->method('getMapWidth')
+            ->willReturn(rand(100, 1000));
 
-            /**
-             * @var integer
-             */
-            protected $dificultyPercentage = 0;
+        $this->settings->method('getMapHeight')
+            ->willReturn(rand(100, 1000));
 
-            public function _construct()
-            {
-                $this->mapWidth = rand(100, 1000);
-                $this->mapHeight = rand(100, 1000);
-                $this->dificultyPercentage = rand(1, 100);
-            }
+        $this->settings->method('getDificultyPercentage')
+            ->willReturn(rand(1, 100));
 
-            /**
-             * Return map width
-             *
-             * @return int
-             */
-            public function getMapWidth(): int
-            {
-                return $this->mapWidth;
-            }
+        $mapGenerator = $this->createMock(
+            MapGeneratorInterface::class
+        );
 
-            /**
-             * Return map height
-             *
-             * @return int
-             */
-            public function getMapHeight(): int
-            {
-                return $this->mapHeight;
-            }
+        $mapGenerator->method('create')
+            ->will(
+                $this->returnCallback(
+                    function (SettingsInterface $settings, Game $game) {
+                        $map = new Map([
+                            'width' => $settings->getMapWidth(),
+                            'height' => $settings->getMapHeight(),
+                        ]);
 
-            /**
-             * Return dificulty percentage
-             *
-             * @return int
-             */
-            public function getDificultyPercentage(): int
-            {
-                return $this->dificultyPercentage;
-            }
-        };
+                        $game->map()->save($map);
 
-        /**
-         * Fake MapGeneratorInterface
-         */
-        $mapGenerator = new class () implements MapGeneratorInterface {
-            /**
-             * Creates a new map with artifacts
-             *
-             * @access  public
-             * @param   SettingsInterface   $settings
-             * @param   Game                $game
-             * @return  Map
-             */
-            public function create(SettingsInterface $settings, Game $game): Map
-            {
-                $map = new Map([
-                    'width' => $settings->getMapWidth(),
-                    'height' => $settings->getMapHeight(),
-                ]);
-
-                $game->map()->save($map);
-
-                return $map;
-            }
-        };
+                        return $map;
+                    }
+                )
+            );
 
         $this->service = new GameService($mapGenerator);
     }
