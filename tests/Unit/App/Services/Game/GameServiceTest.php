@@ -176,4 +176,68 @@ class GameServiceTest extends TestCase
                 ->exists()
         );
     }
+
+    /**
+     * Test start the game invalid status
+     */
+    public function testStartTheGameInvalidStatus()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
+
+        $game->players()->saveMany(
+            factory(
+                Player::class,
+                GameService::MIN_PLAYERS
+            )->create()
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->service->startTheGame($game);
+    }
+
+    /**
+     * Test start the game invalid players count
+     */
+    public function testStartTheGameInvalidPlayersCount()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->service->startTheGame($game);
+    }
+
+    /**
+     * Test start the game
+     */
+    public function testStartTheGame()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $game->players()->saveMany(
+            factory(
+                Player::class,
+                GameService::MIN_PLAYERS
+            )->create()
+        );
+
+        $this->expectException(\InvalidArgumentException::class);
+
+        $this->service->startTheGame($game);
+
+        $this->assertEquals(
+            GameStatuses::ACTIVE,
+            $game->status
+        );
+    }
 }

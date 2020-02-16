@@ -12,6 +12,7 @@ use App\Models\User;
 
 class GameService implements GameServiceInterface
 {
+    const MIN_PLAYERS = 2;
     const MAX_PLAYERS = 8;
 
     /**
