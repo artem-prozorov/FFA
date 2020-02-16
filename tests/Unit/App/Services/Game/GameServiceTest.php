@@ -99,9 +99,12 @@ class GameServiceTest extends TestCase
             $this->settings
         );
 
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
+
         $user = factory(User::class)->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->service->applyUserForGame($user, $game);
     }
@@ -115,19 +118,16 @@ class GameServiceTest extends TestCase
             $this->settings
         );
 
-        $game->status = GameStatuses::ACTIVE;
-        $game->save();
-
         $game->players()->saveMany(
             factory(
                 Player::class,
-                GameService::MAX_PLAYERS_COUNT + 1
+                GameService::MAX_PLAYERS + 1
             )->create()
         );
 
         $user = factory(User::class)->create();
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->service->applyUserForGame($user, $game);
     }
@@ -141,9 +141,6 @@ class GameServiceTest extends TestCase
             $this->settings
         );
 
-        $game->status = GameStatuses::ACTIVE;
-        $game->save();
-
         $user = factory(User::class)->create();
 
         $player = new Player([
@@ -155,7 +152,7 @@ class GameServiceTest extends TestCase
             $player
         );
 
-        $this->expectException(InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
         $this->service->applyUserForGame($user, $game);
     }
@@ -169,15 +166,14 @@ class GameServiceTest extends TestCase
             $this->settings
         );
 
-        $game->status = GameStatuses::ACTIVE;
-        $game->save();
-
         $user = factory(User::class)->create();
 
         $this->service->applyUserForGame($user, $game);
 
         $this->assertTrue(
-            $game->players->contains($user)
+            $game->players()
+                ->where('players.user_id', $user->id)
+                ->exists()
         );
     }
 }
