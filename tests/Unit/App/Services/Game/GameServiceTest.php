@@ -231,8 +231,6 @@ class GameServiceTest extends TestCase
             )->create()
         );
 
-        $this->expectException(\InvalidArgumentException::class);
-
         $this->service->startTheGame($game);
 
         $this->assertEquals(

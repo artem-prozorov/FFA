@@ -96,6 +96,19 @@ class GameService implements GameServiceInterface
      */
     public function startTheGame(Game $game): void
     {
+        if (GameStatuses::NEW_GAME !== $game->status) {
+            throw new \InvalidArgumentException(
+                'Game status must be "'.GameStatuses::NEW_GAME.'" (NEW_GAME)'
+            );
+        }
 
+        if (static::MIN_PLAYERS > $game->players()->count()) {
+            throw new \InvalidArgumentException(
+                'Game players must be greater than or equal "'.static::MIN_PLAYERS
+            );
+        }
+
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
     }
 }
