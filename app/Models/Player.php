@@ -10,6 +10,14 @@ class Player extends Model implements AttackableInterface
 {
     use HasOnePosition;
 
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'user_id',
+        'status',
+    ];
+
     public function game()
     {
         return $this->belongsTo(Game::class, 'game_id');

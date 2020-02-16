@@ -7,6 +7,8 @@ use App\Contracts\Map\MapGeneratorInterface;
 use App\Dictionaries\GameStatuses;
 use App\Models\Game;
 use App\Models\Map;
+use App\Models\Player;
+use App\Models\User;
 use App\Services\Game\GameService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -85,6 +87,97 @@ class GameServiceTest extends TestCase
         $this->assertInstanceOf(
             Map::class,
             $game->map
+        );
+    }
+
+    /**
+     * Test apply user for game invalid status
+     */
+    public function testApplyUserForGameInvalidStatus()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $user = factory(User::class)->create();
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->service->applyUserForGame($user, $game);
+    }
+
+    /**
+     * Test apply user for game invalid players count
+     */
+    public function testApplyUserForGameInvalidPlayersCount()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
+
+        $game->players()->saveMany(
+            factory(
+                Player::class,
+                GameService::MAX_PLAYERS_COUNT + 1
+            )->create()
+        );
+
+        $user = factory(User::class)->create();
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->service->applyUserForGame($user, $game);
+    }
+
+    /**
+     * Test apply user for game is player already in game
+     */
+    public function testApplyUserForGameAlreadyInGame()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
+
+        $user = factory(User::class)->create();
+
+        $player = new Player([
+            'user_id' => $user->id,
+            'status' => 1,
+        ]);
+
+        $game->players()->save(
+            $player
+        );
+
+        $this->expectException(InvalidArgumentException::class);
+
+        $this->service->applyUserForGame($user, $game);
+    }
+
+    /**
+     * Test apply user for game
+     */
+    public function testApplyUserForGame()
+    {
+        $game = $this->service->createNewGame(
+            $this->settings
+        );
+
+        $game->status = GameStatuses::ACTIVE;
+        $game->save();
+
+        $user = factory(User::class)->create();
+
+        $this->service->applyUserForGame($user, $game);
+
+        $this->assertTrue(
+            $game->players->contains($user)
         );
     }
 }

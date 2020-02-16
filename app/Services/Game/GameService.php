@@ -11,6 +11,8 @@ use App\Models\User;
 
 class GameService implements GameServiceInterface
 {
+    const MAX_PLAYERS_COUNT = 8;
+
     /**
      * @var MapGeneratorInterface
      */
