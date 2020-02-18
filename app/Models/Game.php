@@ -6,6 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Game extends Model
 {
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'status',
+    ];
+
     public function map()
     {
         return $this->hasOne(Map::class, 'game_id');
