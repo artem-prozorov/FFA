@@ -10,20 +10,16 @@ use App\Exceptions\InvalidActionException;
 
 class PositionableActionFactory
 {
-    public function getSuitableAction(Player $player, PositionableInterface $positionable): App\Actions\AbstractAction
+    public function getSuitableAction(Player $player, PositionableInterface $positionable): AbstractAction
     {
-        try {
-            if ($positionable instanceof AttackableInterface) {
-                return App\Actions\Attack;
-            }
-            
-            if ($positionable instanceof TakeableInterface) {
-                return App\Actions\Take;
-            }
-
-            throw new InvalidActionException;
-        } catch (InvalidActionException $e) {
-            echo $e->getMessage();
+        if ($positionable instanceof AttackableInterface) {
+            return App\Actions\Attack;
         }
+        
+        if ($positionable instanceof TakeableInterface) {
+            return App\Actions\Take;
+        }
+
+        throw new InvalidActionException;
     }
 }
