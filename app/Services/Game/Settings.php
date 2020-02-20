@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Services\Game;
 
 use App\Contracts\Game\SettingsInterface;
@@ -8,8 +7,8 @@ use App\Contracts\Game\SettingsInterface;
 
 class Settings implements SettingsInterface
 {
-    public const DEFAULT_MAX_WIDTH = 100;
-    public const DEFAULT_MIN_WIDTH = 1000;
+    public const DEFAULT_MIN_WIDTH = 100;
+    public const DEFAULT_MAX_WIDTH = 1000;
     public const DEFAULT_WIDTH = 250;
     public const DEFAULT_MIN_HEIGHT = 100;
     public const DEFAULT_MAX_HEIGHT = 1000;
@@ -18,39 +17,46 @@ class Settings implements SettingsInterface
     public const DEFAULT_MAX_DIFICULTY = 10;
     public const DEFAULT_DIFICULTY = 5;
 
-    protected $min_width;
-    protected $max_width;
     protected $width;
-    protected $min_height;
-    protected $max_height;
     protected $height;
-    protected $min_dificulty;
-    protected $max_dificulty;
     protected $dificulty;
 
     public function __construct(array $settings = [])
     {
-        $min_width = $settings['min_width'] ?? config('game.settings.default_min_width') ?? static::DEFAULT_MIN_WIDTH;
-        $max_width = $settings['max_width'] ?? config('game.settings.default_max_width') ?? static::DEFAULT_MAX_WIDTH;
-        $width = $settings['width'] ?? config('game.settings.default_width') ?? static::DEFAULT_WIDTH;
+        $arrayConstants = [
+            'min_width' => self::DEFAULT_MIN_WIDTH,
+            'max_width' => self::DEFAULT_MAX_WIDTH,
+            'width' => self::DEFAULT_WIDTH,
+            'min_height' => self::DEFAULT_MIN_HEIGHT,
+            'max_height' => self::DEFAULT_MAX_HEIGHT,
+            'height' => self::DEFAULT_HEIGHT,
+            'min_dificulty' => self::DEFAULT_MIN_DIFICULTY,
+            'max_dificulty' => self::DEFAULT_MAX_DIFICULTY,
+            'dificulty' => self::DEFAULT_DIFICULTY,
+        ];
+        $data = array_merge($arrayConstants, config('game.settings'), $settings);
 
-        if ($min_width > $width || $max_width < $width) {
+        $minWidth = $data['min_width'];
+        $maxWidth = $data['max_width'];
+        $this->width = $data['width'];
+
+        if (!($minWidth < $this->width && $maxWidth > $this->width)) {
             throw new \InvalidArgumentException();
         }
 
-        $min_height = $settings['min_height'] ?? config('game.settings.default_min_height') ?? static::DEFAULT_MIN_HEIGHT;
-        $max_height = $settings['max_height'] ?? config('game.settings.default_max_height') ?? static::DEFAULT_MAX_HEIGHT;
-        $height = $settings['height'] ?? config('game.settings.default_height') ?? static::DEFAULT_HEIGHT;
+        $minHeight = $data['min_height'];
+        $maxHeight = $data['max_height'];
+        $this->height = $data['height'];
 
-        if ($min_height > $height || $max_height < $height) {
+        if (!($minHeight < $this->height && $maxHeight > $this->height)) {
             throw new \InvalidArgumentException();
         }
 
-        $min_dificulty = $settings['min_dificulty'] ?? config('game.settings.default_min_dificulty') ?? static::DEFAULT_MIN_DIFICULTY;
-        $max_dificulty = $settings['max_dificulty'] ?? config('game.settings.default_max_dificulty') ?? static::DEFAULT_MAX_DIFICULTY;
-        $dificulty = $settings['dificulty'] ?? config('game.settings.default_dificulty') ?? static::DEFAULT_DIFICULTY;
+        $minDificulty = $data['min_dificulty'];
+        $maxDificulty = $data['max_dificulty'];
+        $this->dificulty = $data['dificulty'];
 
-        if ($min_dificulty > $dificulty || $max_dificulty < $dificulty) {
+        if (!($minDificulty < $this->dificulty && $maxDificulty > $this->dificulty)) {
             throw new \InvalidArgumentException();
         }
     }
@@ -76,6 +82,6 @@ class Settings implements SettingsInterface
      */
     public function getDificultyPercentage(): int
     {
-        $this->dificulty;
+        return $this->dificulty;
     }
 }
