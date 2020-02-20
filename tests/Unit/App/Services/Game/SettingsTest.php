@@ -13,13 +13,13 @@ class SettingsTest extends TestCase
         [
             'min_width' => 100,
             'max_width' => 1000,
-            'default_width' => 250,
+            'width' => 250,
             'min_height' => 100,
             'max_height' => 1000,
-            'default_height' => 250,
+            'height' => 250,
             'min_dificulty' => 1,
             'max_dificulty' => 10,
-            'default_dificulty' => 5,
+            'dificulty' => 5,
         ]
     ];
 
@@ -38,7 +38,7 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($expected['width'], $settings->getMapWidth());
         $this->assertEquals($expected['height'], $settings->getMapHeight());
-        $this->assertEquals($expected['dificulty'], $settings->getDificulty());
+        $this->assertEquals($expected['dificulty'], $settings->getDificultyPercentage());
     }
 
 
@@ -49,16 +49,16 @@ class SettingsTest extends TestCase
                 ['width' => 111],
                 $this->config[0],
                 [
-                    'width' => 111, 
-                    'height' => $this->config['default_width'], 
-                    'dificulty' => $this->config['default_dificulty'],
+                    'width' => 111,
+                    'height' => $this->config[0]['height'],
+                    'dificulty' => $this->config[0]['dificulty'],
                 ],
             ],
             [
                 ['height' => 115],
                 [],
                 [
-                    'width' => Settings::DEFAULT_WIDTH, 
+                    'width' => Settings::DEFAULT_WIDTH,
                     'height' => 115, 
                     'dificulty' => Settings::DEFAULT_DIFICULTY,
                 ],
